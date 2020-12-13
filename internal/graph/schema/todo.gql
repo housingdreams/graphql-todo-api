@@ -1,0 +1,82 @@
+extend type Mutation {
+    createTodo(input: CreateTodoInput!): CreateTodoResponse!
+    updateTodo(input: UpdateTodoInput!): UpdateTodoResponse! # @hasRole(roles: [AUTHOR])
+    deleteTodo(input: DeleteTodoInput!): DeleteTodoResponse! # @hasRole(roles: [AUTHOR])
+
+    likeTodo(input: LikeTodoInput!): LikeTodoResponse!
+    unlikeTodo(input: UnlikeTodoinput!): UnlikeTodoResponse!
+}
+
+input UnlikeTodoinput {
+    todoID: UUID!
+}
+
+type UnlikeTodoResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+extend type Query {
+    todos: [Todo!]!
+    findTodo(input: FindTodoInput!): Todo
+    findMyTodos: [Todo!]!
+
+    findTodoLikers(input: FindTodoLikersInput!): FindTodoLikersResponse!
+}
+
+input FindTodoLikersInput {
+    todoID: UUID!
+}
+
+type FindTodoLikersResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    likers: [UserAccount!]!
+}
+
+type CreateTodoResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    todo: Todo
+}
+
+type LikeTodoResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+type DeleteTodoResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+type UpdateTodoResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    todo: Todo
+}
+
+input CreateTodoInput {
+    title: String!
+    done: Boolean!
+    content: String!
+    dueDate: Time
+    bgColor: String
+}
+
+input UpdateTodoInput {
+    id: UUID!
+    title: String!
+    done: Boolean!
+    content: String!
+    dueDate: Time
+    bgColor: String
+}
+
+input DeleteTodoInput {
+    id: UUID!
+}
+
+input LikeTodoInput {
+    todoID: UUID!
+}

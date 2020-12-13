@@ -1,0 +1,24 @@
+enum RoleLevel {
+    AUTHOR
+    USER
+}
+
+interface BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+# directive @hasRole(roles: [RoleLevel!]!) on FIELD_DEFINITION
+
+input FindTodoInput {
+    id: UUID!
+}
+
+input FindUserInput {
+    id: UUID!
+}
+
+type Query {
+    users: [UserAccount!]!
+    findUser(input: FindUserInput!): UserAccount
+}

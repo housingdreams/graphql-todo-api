@@ -1,0 +1,18 @@
+extend type Mutation {
+    createNewUser(input: CreateNewUserInput!): CreateNewUserResponse!
+}
+
+type CreateNewUserResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    user: UserAccount
+}
+
+input CreateNewUserInput {
+    firstName: String!
+    lastName: String!
+    username: String!
+    email: String!
+    password: String!
+    passwordConfirm: String!
+}

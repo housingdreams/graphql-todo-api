@@ -1,0 +1,60 @@
+extend type Mutation {
+    createComment(input: CreateCommentInput!): CreateCommentResponse!
+    createChildComment(input: CreateChildCommentInput!): CreateChildCommentResponse!
+    likeComment(input: LikeCommentInput!): LikeCommentResponse!
+    unlikeComment(input: UnlikeCommentInput!): UnLikeCommentResponse!
+}
+
+extend type Query {
+    todoMainComments(input: TodoMainCommentInput!): [Comment!]!
+    todoSubComments(input: TodoSubcommentsInput!): [Comment!]!
+}
+
+input TodoMainCommentInput {
+    todoID: UUID!
+}
+
+input TodoSubcommentsInput {
+    parentCommentID: UUID!
+}
+
+input LikeCommentInput {
+    commentID: UUID!
+}
+
+type LikeCommentResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+type UnLikeCommentResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+}
+
+input UnlikeCommentInput {
+    commentID: UUID!
+}
+
+input CreateCommentInput {
+    todoID: UUID!
+    content: String!
+}
+
+input CreateChildCommentInput {
+    todoID: UUID!
+    content: String!
+    parentID: UUID!
+}
+
+type CreateChildCommentResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    comment: Comment!
+}
+
+type CreateCommentResponse implements BaseMutationResponse {
+    ok: Boolean!
+    message: String!
+    comment: Comment!
+}

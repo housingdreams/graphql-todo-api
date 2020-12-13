@@ -1,0 +1,56 @@
+scalar Time
+scalar Upload
+scalar UUID
+
+enum RoleCode {
+    owner
+    admin
+    visitor
+    observer
+}
+
+type Role {
+  code: String!
+  name: String!
+}
+
+type UserAccount {
+    id: UUID!
+    email: String!
+    username: String!
+    first_name: String!
+    last_name: String!
+    role: Role!
+    createdAt: Time!
+    todos: [Todo!]!
+}
+
+enum Status {
+    DONE
+    IN_PROGRESS
+    MISSED
+}
+
+type Todo {
+    id: UUID!
+    title: String!
+    completed: Boolean!
+    status: Status!
+    content: String!
+    createdAt: Time!
+    updatedAt: Time
+    dueDate: Time
+    background: String
+    numOfLikes: Int!
+    numOfComments: Int!
+    liked: Boolean!
+}
+
+type Comment {
+    id: UUID!
+    content: String!
+    createdAt: Time!
+    updatedAt: Time
+    numOfLikes: Int!
+    liked: Boolean!
+}
