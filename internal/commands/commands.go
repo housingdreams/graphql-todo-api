@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -42,14 +43,11 @@ func initConfig() {
 		// Use config file from the flag
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Search config in home directory with name ".cobra" (no extension).
-		viper.AddConfigPath("./conf")
 		viper.AddConfigPath(".")
-		viper.AddConfigPath("/etc/todo")
-		viper.SetConfigName("todo")
+		viper.SetConfigFile(".env")
 	}
 
-	viper.SetEnvPrefix("TODO")
+	// viper.SetEnvPrefix("TODO")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
@@ -62,14 +60,11 @@ func initConfig() {
 
 // Execute the root cobra command
 func Execute() {
-	viper.SetDefault("server.hostname", ":5555")
+	viper.SetDefault("server.hostname", ":8000")
 	viper.SetDefault("database.host", "127.0.0.1")
-	viper.SetDefault("database.name", "todo")
-	viper.SetDefault("database.user", "minh")
-	viper.SetDefault("database.password", "anhyeuem98")
-
-	viper.SetDefault("queue.broker", "amqp://guest:guest@localhost:5672/")
-	viper.SetDefault("queue.store", "memcache://localhost:11211")
+	viper.SetDefault("database.name", "docker")
+	viper.SetDefault("database.user", "postgres")
+	viper.SetDefault("database.password", "docker")
 
 	rootCmd.SetVersionTemplate(versionTemplate)
 	rootCmd.AddCommand(newWebCmd(), newMigrateCommand(), newTokenCmd())

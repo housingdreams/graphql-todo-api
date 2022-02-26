@@ -2,8 +2,6 @@ package route
 
 import (
 	"net/http"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -12,36 +10,37 @@ import (
 
 	"github.com/go-chi/cors"
 	"github.com/leminhson2398/todo-api/internal/db"
-	"github.com/leminhson2398/todo-api/internal/frontend"
+
+	// "github.com/leminhson2398/todo-api/internal/frontend"
 	"github.com/leminhson2398/todo-api/internal/graph"
 )
 
-type FrontendHandler struct {
-	staticPath string
-	indexPath  string
-}
+// type FrontendHandler struct {
+// 	staticPath string
+// 	indexPath  string
+// }
 
-func (h FrontendHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	path, err := filepath.Abs(r.URL.Path)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	f, err := frontend.Frontend.Open(path)
-	if os.IsNotExist(err) || IsDir(f) {
-		index, err := frontend.Frontend.Open("index.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		http.ServeContent(w, r, "index.html", time.Now(), index)
-		return
-	} else if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	http.ServeContent(w, r, path, time.Now(), f)
-}
+// func (h FrontendHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+// 	path, err := filepath.Abs(r.URL.Path)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusBadRequest)
+// 		return
+// 	}
+// 	f, err := frontend.Frontend.Open(path)
+// 	if os.IsNotExist(err) || IsDir(f) {
+// 		index, err := frontend.Frontend.Open("index.html")
+// 		if err != nil {
+// 			http.Error(w, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
+// 		http.ServeContent(w, r, "index.html", time.Now(), index)
+// 		return
+// 	} else if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	http.ServeContent(w, r, path, time.Now(), f)
+// }
 
 func IsDir(f http.File) bool {
 	fi, err := f.Stat()
@@ -81,7 +80,8 @@ func NewRouter(dbConnection *sqlx.DB, jwtKey []byte) (chi.Router, error) {
 	var imgserver = http.FileServer(http.Dir("./uploads/"))
 	r.Group(func(mux chi.Router) {
 		mux.Mount("/auth", authResource{}.AuthGroup(todoHandler))
-		mux.Handle("/__graphql", graph.NewPlaygroundHandler("/graphql"))
+		// mux.Handle("/__graphql", graph.NewPlaygroundHandler("/graphql"))
+		mux.Handle("/", graph.NewPlaygroundHandler("/graphql"))
 		mux.Mount("/uploads/", http.StripPrefix("/uploads/", imgserver))
 	})
 
@@ -92,11 +92,11 @@ func NewRouter(dbConnection *sqlx.DB, jwtKey []byte) (chi.Router, error) {
 		mux.Handle("/graphql", graph.NewHandler(*repository))
 	})
 
-	frontend := FrontendHandler{
-		staticPath: "build",
-		indexPath:  "index.html",
-	}
-	r.Handle("/*", frontend)
+	// frontend := FrontendHandler{
+	// 	staticPath: "build",
+	// 	indexPath:  "index.html",
+	// }
+	// r.Handle("/*", frontend)
 
 	return r, nil
 }

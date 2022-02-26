@@ -1,15 +1,32 @@
-** TODO API GRAPHQL **
+## TODO API GRAPHQL
 
-NOTE:
-    prerequisites: 
-    1) golang >= 1.14
-    2) nodejs >= 12
-    3) npm >= 6
+```
+cp .env.sample .env
+```
 
-1) create postgresql database
-2) create file similar to file inside conf folder
-3) run: go run cmd/mage/main.go build
-4) run: go run dist/todo migrate
-5) run: go run dist/todo web
+Create postgresql database
 
-Then go to http://localhost:5555
+```
+docker build -t postgres-db . && docker run -it -p 5432:5432 postgres-db
+```
+
+You can connect using dbeaver (`brew install --cask dbeaver-community`) or whatever GUI
+
+```
+Host: localhost
+Port: 5432
+User: postgres
+Password: docker
+Datbase: docker
+```
+
+```
+go run cmd/mage/main.go backend:genMigrations backend:build
+```
+
+```
+go run cmd/todo/main.go token
+go run cmd/todo/main.go web
+```
+
+Then go to http://localhost:8000

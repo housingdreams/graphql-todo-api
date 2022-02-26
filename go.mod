@@ -13,6 +13,7 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/websocket v1.4.2
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/joho/godotenv v1.4.0
 	github.com/jordanknott/taskcafe v0.0.0-20201020235815-6c7203a4aa80
 	github.com/kyleconroy/sqlc v1.5.0 // indirect
 	github.com/lib/pq v1.4.0

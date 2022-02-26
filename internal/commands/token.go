@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -14,11 +15,14 @@ import (
 
 func newTokenCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "token",
+		Use:   "token [userid]",
 		Short: "Create a long lived JWT token for dev purpose",
 		Long:  "Create a long lived JWT token for dev purpose",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
+
+			fmt.Println(os.Getenv("TODO_SEVER_SECRET"))
+
 			secret := viper.GetString("server.secret")
 			if strings.TrimSpace(secret) == "" {
 				return errors.New("server.secret must be set")
