@@ -18,7 +18,7 @@ func newTokenCmd() *cobra.Command {
 		Use:   "token [userid]",
 		Short: "Create a long lived JWT token for dev purpose",
 		Long:  "Create a long lived JWT token for dev purpose",
-		Args:  cobra.ExactArgs(1),
+		// Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 
 			secret := viper.GetString("server.secret")
@@ -27,10 +27,13 @@ func newTokenCmd() *cobra.Command {
 			}
 
 			// Use userid provided
-			// id := args[0]
+			id := args[0]
 
 			// make one up
-			id := uuid.New().String()
+			if id == "" {
+				id = uuid.New().String()
+				fmt.Println("generated", id)
+			}
 
 			token, err := auth.NewAccessTokenCustomExpiration(id, time.Hour*24, []byte(secret))
 			if err != nil {

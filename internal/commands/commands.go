@@ -67,6 +67,6 @@ func Execute() {
 	viper.SetDefault("database.password", "docker")
 
 	rootCmd.SetVersionTemplate(versionTemplate)
-	rootCmd.AddCommand(newWebCmd(), newMigrateCommand(), newTokenCmd())
+	rootCmd.AddCommand(newWebCmd(), newMigrateCommand(), newTokenCmd(), newPasswordCmd())
 	rootCmd.Execute()
 }
