@@ -47,7 +47,7 @@ func initConfig() {
 		viper.SetConfigFile(".env")
 	}
 
-	// viper.SetEnvPrefix("TODO")
+	viper.SetEnvPrefix("TODO")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
@@ -60,7 +60,7 @@ func initConfig() {
 
 // Execute the root cobra command
 func Execute() {
-	viper.SetDefault("server.hostname", ":8000")
+	// viper.SetDefault("server.hostname", ":8000")
 	viper.SetDefault("database.host", "127.0.0.1")
 	viper.SetDefault("database.name", "docker")
 	viper.SetDefault("database.user", "postgres")

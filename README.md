@@ -21,11 +21,7 @@ Datbase: docker
 ```
 
 ```
-go run cmd/mage/main.go backend:genMigrations backend:build
-```
-
-```
-go run cmd/todo/main.go token
+go run cmd/todo/main.go token [userid]
 go run cmd/todo/main.go web
 ```
 
